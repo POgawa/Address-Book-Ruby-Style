@@ -62,13 +62,13 @@ def show_contact(contact_index)
   puts "\nName:\t#{current_contact.name}"
 
   current_contact.phones.each do |phone|
-    puts "Phone:\t\t#{phone.number}"
+    puts "Phone:\t\t#{phone.value}"
   end
   current_contact.emails.each do |email|
-    puts "Email:\t\t#{email.email}"
+    puts "Email:\t\t#{email.value}"
   end
   current_contact.addresses.each do |address|
-    puts "Address:\t#{address.address}"
+    puts "Address:\t#{address.value}"
   end
 
   puts "\n\nEnter 'e' to edit your contact, 'l' to return to the contact list\nEnter 'x' to exit the program."
@@ -112,7 +112,7 @@ end
 def edit_phones(contact_index)
   puts "\nHere are all of #{Contact.all[contact_index].name}'s phone numbers:"
   Contact.all[contact_index].phones.each_with_index do |phone, index|
-    puts "#{index+1} #{phone.number}"
+    puts "#{index+1}:\t#{phone.label}:\t#{phone.value}"
   end
   if Contact.all[contact_index].phones.length == 0
     puts "[no phone numbers yet]"
@@ -123,12 +123,18 @@ def edit_phones(contact_index)
   when 'n'
     puts "Enter new phone number:"
     new_phone = gets.chomp
-    Contact.all[contact_index].add_phone(new_phone)
+    puts "Enter the label for this phone number (ex: Home, Work, Cell)"
+    Contact.all[contact_index].add_phone(new_phone, gets.chomp)
     edit_phones(contact_index)
   when /\d/
-    puts "Enter edited phone number for #{Contact.all[contact_index].phones[list_choice.to_i - 1].number}:"
+    puts "Enter edited phone number for #{Contact.all[contact_index].phones[list_choice.to_i - 1].value}:"
     new_phone = gets.chomp
-    Contact.all[contact_index].phones[list_choice.to_i - 1].change_phones(new_phone)
+    Contact.all[contact_index].phones[list_choice.to_i - 1].change_value(new_phone)
+    puts "The phone is currently labeled #{Contact.all[contact_index].phones[list_choice.to_i - 1].label}. Enter the new label for this number. Press 'k' to keep the current label."
+    label_choice = gets.chomp
+    if label_choice != 'k'
+      Contact.all[contact_index].phones[list_choice.to_i - 1].change_label(label_choice)
+    end
     edit_phones(contact_index)
   when 'l'
     list_contact
@@ -145,7 +151,7 @@ end
 def edit_emails(contact_index)
   puts "\nHere are all of #{Contact.all[contact_index].name}'s emails:"
   Contact.all[contact_index].emails.each_with_index do |email, index|
-    puts "#{index+1} #{email.email}"
+    puts "#{index+1}\t#{email.value}"
   end
   if Contact.all[contact_index].emails.length == 0
     puts "[no emails yet]"
@@ -161,7 +167,7 @@ def edit_emails(contact_index)
   when /\d/
     puts "Enter edited email for #{Contact.all[contact_index].emails[list_choice.to_i - 1].email}:"
     new_email = gets.chomp
-    Contact.all[contact_index].emails[list_choice.to_i - 1].change_email(new_email)
+    Contact.all[contact_index].emails[list_choice.to_i - 1].change_value(new_email)
     edit_emails(contact_index)
   when 'l'
     list_contact
@@ -178,7 +184,7 @@ end
 def edit_addresses(contact_index)
   puts "\nHere are all of #{Contact.all[contact_index].name}'s addresses:"
   Contact.all[contact_index].addresses.each_with_index do |address, index|
-    puts "#{index+1} #{address.address}"
+    puts "#{index+1}: #{address.full_address}"
   end
   if Contact.all[contact_index].addresses.length == 0
     puts "[no addresses yet]"
@@ -187,14 +193,26 @@ def edit_addresses(contact_index)
   list_choice = gets.chomp
   case list_choice
   when 'n'
-    puts "Enter new address:"
-    new_address = gets.chomp
-    Contact.all[contact_index].add_address(new_address)
+    puts "Enter street address:"
+    new_street = gets.chomp
+    puts "Enter city:"
+    new_city = gets.chomp
+    puts "Enter state:"
+    new_state = gets.chomp
+    puts "Enter zip:"
+    new_zip = gets.chomp
+    Contact.all[contact_index].add_address(new_street, new_city, new_state, new_zip)
     edit_addresses(contact_index)
   when /\d/
-    puts "Enter edited address for #{Contact.all[contact_index].addresses[list_choice.to_i - 1].address}:"
-    new_address = gets.chomp
-    Contact.all[contact_index].addresses[list_choice.to_i - 1].change_address(new_address)
+    puts "Enter edited street address for #{Contact.all[contact_index].addresses[list_choice.to_i - 1].full_address}:"
+    new_street = gets.chomp
+    puts "Enter edited city."
+    new_city = gets.chomp
+    puts "Enter edited state."
+    new_state = gets.chomp
+    puts "Enter edited zip code."
+    new_zip = gets.chomp
+    Contact.all[contact_index].addresses[list_choice.to_i - 1].change_value(new_street, new_city, new_state, new_zip)
     edit_addresses(contact_index)
   when 'l'
     list_contact

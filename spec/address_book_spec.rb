@@ -42,8 +42,8 @@ describe Contact do
   describe 'add_phone' do
     it 'adds a phone number for a Contact' do
       test_contact = Contact.create('Jan', 'Ullrich')
-      test_contact.add_phone("829-267-2859")
-      test_contact.phone.should eq "829-267-2859"
+      test_contact.add_phone("829-267-2859", "")
+      test_contact.phones[0].value.should eq "829-267-2859"
     end
   end
 
@@ -51,15 +51,15 @@ describe Contact do
     it 'adds an email to the Contact' do
       test_contact = Contact.create('Jan', 'Ullrich')
       test_contact.add_email('jan.ullrich@tmobile.com')
-      test_contact.email.should eq 'jan.ullrich@tmobile.com'
+      test_contact.emails[0].value.should eq 'jan.ullrich@tmobile.com'
     end
   end
 
   describe 'add_address' do
     it 'adds an address to the Contact' do
       test_contact = Contact.create('Jan', 'Ullrich')
-      test_contact.add_address("No. 2 Jan Ullrich Way, Hamburg OH, 43456")
-      test_contact.address.should eq "No. 2 Jan Ullrich Way, Hamburg OH, 43456"
+      test_contact.add_address("No. 2 Jan Ullrich Way", "Hamburg", "OH", "43456")
+      test_contact.addresses[0].full_address.should eq "No. 2 Jan Ullrich Way, Hamburg OH, 43456"
     end
   end
 end

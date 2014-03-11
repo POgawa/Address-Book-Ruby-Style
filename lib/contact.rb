@@ -1,6 +1,4 @@
-require './lib/phones'
-require './lib/emails'
-require './lib/addresses'
+require './lib/values'
 
 class Contact
   @@all_contacts = []
@@ -35,8 +33,8 @@ class Contact
     @@all_contacts
   end
 
-  def add_phone(phone_number)
-    new_phone = Phones.new(phone_number)
+  def add_phone(phone_number, label)
+    new_phone = Phone.new(phone_number, label)
     @phones << new_phone
 
   end
@@ -46,7 +44,7 @@ class Contact
   end
 
   def add_email(email_address)
-    new_email = Emails.new(email_address)
+    new_email = Email.new(email_address)
     @emails << new_email
   end
 
@@ -54,8 +52,8 @@ class Contact
     @emails
   end
 
-  def add_address(entered_address)
-    new_address = Addresses.new(entered_address)
+  def add_address(entered_street, entered_city, entered_state, entered_zip)
+    new_address = Address.new(entered_street, entered_city, entered_state, entered_zip)
     @addresses << new_address
   end
 

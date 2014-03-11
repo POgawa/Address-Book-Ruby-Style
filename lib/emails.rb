@@ -1,6 +1,7 @@
 class Emails
   def initialize(email)
     @email = email
+    @domai
   end
 
   def email
@@ -8,6 +9,5 @@ class Emails
   end
   def change_email(email)
     @email = email
-
   end
 end
